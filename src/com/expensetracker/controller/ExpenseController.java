@@ -40,11 +40,19 @@ public class ExpenseController {
         return expenses;
     }
 
-//    public void addExpense(String name, String category, double amount) {
-//        ArrayList<Expense> expenses = getExpenses();
-//        Expense newExpense = new Expense(name, category, amount);
-//        expenses.add(newExpense);
-//    }
+    public void addExpense(String name, String category, double amount, String filePath) {
+        if (name == null || name.isEmpty() || category == null || category.isEmpty() || amount < 0 || filePath == null || filePath.isEmpty()) {
+            return;
+        }
+        String text = name + "\t" + category + "\t" + amount;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            writer.newLine(); // Insert a platform-independent newline
+            writer.write(text);
+            System.out.println("Successfully appended to the file.");
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
 
     public String createExpeseFile(String fileName) throws IOException {
         String filePath = fileName + ".txt";
