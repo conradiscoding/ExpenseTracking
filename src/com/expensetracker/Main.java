@@ -17,11 +17,12 @@ public class Main {
         System.out.println(output);
 
         String filePath = extractFile.extractFilePath(output);
-        System.out.println(filePath);
+
+        controller.addExpense("cookies", "Food", 2.30, filePath);
 
         ArrayList<Expense> expenses = controller.getExpenses(filePath);
         for (Expense expense : expenses) {
-            System.out.println(expense.getName());
+            System.out.println(expense.getName() + " " + expense.getCategory() + " " + expense.getAmount());
         }
 
 
