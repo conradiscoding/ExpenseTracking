@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Expense {
+    private Integer expenseId;
     private String name;
     private String category;
     private Double amount;
