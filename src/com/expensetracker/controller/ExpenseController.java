@@ -16,7 +16,7 @@ public class ExpenseController {
 
             // Skip the first line (header)
             if ((line = br.readLine()) != null) {
-                System.out.println("Skipping header: " + line);
+                System.out.println(line);
             }
 
             // Read remaining lines
