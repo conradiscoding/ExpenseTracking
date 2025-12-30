@@ -32,7 +32,7 @@ public class Main {
                 case 1:
                     System.out.println("Enter Name for New Expense File");
                     String name = reader.readLine();
-                    if (name.isEmpty() || name.isBlank() || name.length() < 3) {
+                    if (name.isBlank() || name.length() < 3) {
                         System.out.println("returning back to menu");
                         selection = 0;
                         break;
@@ -43,7 +43,7 @@ public class Main {
                 case 2:
                     System.out.println("Enter File Path for Load Expense File");
                     String path = reader.readLine();
-                    if (path.isEmpty() || path.isBlank() || path.length() < 3) {
+                    if (path.isBlank() || path.length() < 3) {
                         System.out.println("returning back to menu");
                         selection = 0;
                         break;
@@ -56,7 +56,7 @@ public class Main {
                 case 3:
                     System.out.println("Enter File Path for Add Expense File");
                     String addPath = reader.readLine();
-                    if (addPath.isEmpty() || addPath.isBlank()) {
+                    if (addPath.isBlank()) {
                         System.out.println("returning back to menu");
                         selection = 0;
                         break;
