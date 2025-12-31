@@ -17,13 +17,15 @@ public class Main {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        while(selection == 0) {
-            System.out.println("Hello, welcome to the Expense Tracker");
+        System.out.println("Hello, welcome to the Expense Tracker");
+
+        while(selection != 7) {
             System.out.println("What would you like to do?");
             System.out.println("1. Create New Expense File");
             System.out.println("2. Load Expense File");
             System.out.println("3. Add Expense");
 //        System.out.println("4. Delete Expense");
+            System.out.println("7. Exit Program");
 
             selection = Integer.parseInt(reader.readLine());
 
@@ -65,6 +67,10 @@ public class Main {
                     String addExpenseName = reader.readLine();
                     String[] values = addExpenseName.split(" ");
                     controller.addExpense(values[0], values[1], Double.parseDouble(values[2]), addPath);
+                    break;
+
+                case 7:
+                    selection = 7;
                     break;
 
                 default:
