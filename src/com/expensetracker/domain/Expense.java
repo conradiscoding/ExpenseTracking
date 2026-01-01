@@ -25,10 +25,12 @@ public class Expense {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.date = LocalDateTime.now().format(formatter);
     }
+    public Integer getexpenseId() {return expenseId;}
     public String getName() {return name;}
     public String getCategory() {return category;}
     public Double getAmount() {return amount;}
     public String getDate() {return date;}
+    public void setexpenseId(Integer expenseId) {this.expenseId = expenseId;}
     public void setName(String name) {this.name = name;}
     public void setCategory(String category) {this.category = category;}
     public void setAmount(Double amount) {this.amount = amount;}

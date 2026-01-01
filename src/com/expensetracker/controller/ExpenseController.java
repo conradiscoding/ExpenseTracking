@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ExpenseController {
-    private static final String HEADER = "Expense\tCategory\tAmount";
+    private static final String HEADER = "ExpenseID\t Expense\t Category\t Amount";
 
     public ArrayList<Expense> getExpenses(String filePath) {
         ArrayList<Expense> expenses = new ArrayList<>();
@@ -44,7 +44,9 @@ public class ExpenseController {
         if (name == null || name.isEmpty() || category == null || category.isEmpty() || amount < 0 || filePath == null || filePath.isEmpty()) {
             return;
         }
-        String text = name + "\t" + category + "\t" + amount;
+
+        Integer currentId = getExpenses(filePath).size() + 1;
+        String text =  currentId + "\t" + name + "\t" + category + "\t" + amount;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.newLine(); // Insert a platform-independent newline
             writer.write(text);
