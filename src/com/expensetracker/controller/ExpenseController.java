@@ -3,6 +3,8 @@ package com.expensetracker.controller;
 import com.expensetracker.domain.Expense;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,11 +26,11 @@ public class ExpenseController {
                 String[] values = line.trim().split("\\s+");
 
                 // Skip empty lines
-                if (values.length == 0 || (values.length == 1 && values[0].isEmpty()) || values.length != 3) {
+                if (values.length == 0 || (values.length == 1 && values[0].isEmpty()) || values.length != 4) {
                     continue;
                 }
 
-                Expense expense = new Expense(values[0], values[1], Double.parseDouble(values[2]));
+                Expense expense = new Expense(Integer.parseInt(values[0]),values[1], values[2], Double.parseDouble(values[3]));
                 expenses.add(expense);
 
             }
@@ -70,5 +72,43 @@ public class ExpenseController {
         } else {
             return "File already exists " + file.getAbsolutePath();
         }
+    }
+
+    public void deleteExpenseEntry(String filePath, int id) throws IOException {
+        File inputFile = new File(filePath);
+        File tempFile = new File(filePath + ".tmp");
+
+        if (!inputFile.exists()) {
+            throw new FileNotFoundException("File not found: " + filePath);
+        }
+
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))
+        ) {
+            String line;
+
+            // Read and write the header line (first line)
+            if ((line = br.readLine()) != null) {
+                bw.write(line);
+                bw.newLine();
+            }
+
+            // Process remaining lines
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().startsWith(id + "\t")) {
+                    bw.write(line);
+                    bw.newLine();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Replace original file with updated file
+        Files.delete(inputFile.toPath());
+        Files.move(tempFile.toPath(), inputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        System.out.println("Entry with ID " + id + " removed (if it existed).");
     }
 }
