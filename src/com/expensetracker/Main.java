@@ -24,7 +24,7 @@ public class Main {
             System.out.println("1. Create New Expense File");
             System.out.println("2. Load Expense File");
             System.out.println("3. Add Expense");
-//        System.out.println("4. Delete Expense");
+            System.out.println("4. Delete Expense");
             System.out.println("7. Exit Program");
 
             selection = Integer.parseInt(reader.readLine());
@@ -52,7 +52,7 @@ public class Main {
                     }
                     ArrayList<Expense> expenses = controller.getExpenses(path);
                     for (Expense expense : expenses) {
-                        System.out.println(expense.getName() + " " + expense.getCategory() + " " + expense.getAmount());
+                        System.out.println(expense.getexpenseId() + " " + expense.getName() + " " + expense.getCategory() + " " + expense.getAmount());
                     }
                     break;
                 case 3:
@@ -67,6 +67,27 @@ public class Main {
                     String addExpenseName = reader.readLine();
                     String[] values = addExpenseName.split(" ");
                     controller.addExpense(values[0], values[1], Double.parseDouble(values[2]), addPath);
+                    break;
+
+                case 4:
+                    System.out.println("Enter File Path for Delete Expense File");
+                    String deletePath = reader.readLine();
+                    if (deletePath.isBlank()) {
+                        System.out.println("returning back to menu");
+                        selection = 0;
+                        break;
+                    }
+                    ArrayList<Expense> expensesToDelete = controller.getExpenses(deletePath);
+                    for (Expense expense : expensesToDelete) {
+                        System.out.println(expense.getexpenseId() + " " + expense.getName() + " " + expense.getCategory() + " " + expense.getAmount());
+                    }
+                    System.out.println("Enter Id to delete");
+                    int id = Integer.parseInt(reader.readLine());
+                    if(id < 0 || id > expensesToDelete.size()) {
+                        System.out.println("Can't find id. returning back to menu");
+                        selection = 0;
+                    }
+                    controller.deleteExpenseEntry(deletePath, id);
                     break;
 
                 case 7:
