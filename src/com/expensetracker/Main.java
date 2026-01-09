@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -25,6 +26,8 @@ public class Main {
             System.out.println("2. Load Expense File");
             System.out.println("3. Add Expense");
             System.out.println("4. Delete Expense");
+//            System.out.println("5. Update Expense");
+            System.out.println("6. Total Expenses by Category");
             System.out.println("7. Exit Program");
 
             selection = Integer.parseInt(reader.readLine());
@@ -88,6 +91,18 @@ public class Main {
                         selection = 0;
                     }
                     controller.deleteExpenseEntry(deletePath, id);
+                    break;
+
+
+                case 6:
+                    System.out.println("Enter File Path to calculate total Expenses");
+                    String filepath = reader.readLine();
+                    ArrayList<Expense> ex = controller.getExpenses(filepath);
+                    Map<String,Double> categoryExpenses = ExpenseController.calculateTotalExpensesByCategory(ex);
+
+                    categoryExpenses.forEach((category, totalExpense) -> {
+                        System.out.println(category + " " + totalExpense);
+                    });
                     break;
 
                 case 7:

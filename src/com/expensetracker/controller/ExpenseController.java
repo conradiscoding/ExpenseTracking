@@ -5,8 +5,7 @@ import com.expensetracker.domain.Expense;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class ExpenseController {
     private static final String HEADER = "ExpenseID\t Expense\t Category\t Amount";
@@ -110,5 +109,20 @@ public class ExpenseController {
         Files.move(tempFile.toPath(), inputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         System.out.println("Entry with ID " + id + " removed (if it existed).");
+    }
+
+    public static Map<String, Double> calculateTotalExpensesByCategory(ArrayList<Expense>  expenses) {
+        Map<String, Double> totalExpenses = new HashMap<>();
+
+        for (Expense expense : expenses) {
+            if (expense.getCategory() == null) continue; // skip null categories
+
+            // Get current total or 0.0 if not present
+            double currentTotal = totalExpenses.getOrDefault(expense.getCategory(), 0.0);
+
+            // Add the new amount (skip null amounts if applicable)
+            totalExpenses.put(expense.getCategory(), currentTotal + expense.getAmount());
+        }
+        return totalExpenses;
     }
 }
