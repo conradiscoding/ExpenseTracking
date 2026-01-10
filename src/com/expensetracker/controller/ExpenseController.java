@@ -125,4 +125,51 @@ public class ExpenseController {
         }
         return totalExpenses;
     }
+
+    public void updateExpense(String filePath, int expenseId, String expense) throws IOException {
+        File inputFile = new File(filePath);
+        File tempFile = new File(filePath + ".tmp");
+
+        if (!inputFile.exists()) {
+            throw new FileNotFoundException("File not found: " + filePath);
+        }
+        if (!inputFile.exists()) {
+            throw new FileNotFoundException("File not found: " + filePath);
+        }
+
+        String[] values = expense.split(" ");
+
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))
+        ) {
+            String line;
+
+            // Read and write the header line (first line)
+            if ((line = br.readLine()) != null) {
+                bw.write(line);
+                bw.newLine();
+            }
+
+            // Process remaining lines
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().startsWith(expenseId + "\t")) {
+                    bw.write(line);
+                    bw.newLine();
+                }
+                else{
+                    bw.write(expenseId + "\t" + values[0] + "\t" + values[1] + "\t" + values[2]);
+                    bw.newLine();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Replace original file with updated file
+        Files.delete(inputFile.toPath());
+        Files.move(tempFile.toPath(), inputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        System.out.println("Entry with ID " + expenseId + " updated (if it existed).");
+    }
 }

@@ -1,6 +1,5 @@
 package com.expensetracker;
 
-import com.expensetracker.Utility.ExtractFilePath;
 import com.expensetracker.controller.ExpenseController;
 import com.expensetracker.domain.Expense;
 
@@ -12,7 +11,6 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        final ExtractFilePath extractFile = new ExtractFilePath();
         ExpenseController controller = new ExpenseController();
         int selection = 0;
 
@@ -26,7 +24,7 @@ public class Main {
             System.out.println("2. Load Expense File");
             System.out.println("3. Add Expense");
             System.out.println("4. Delete Expense");
-//            System.out.println("5. Update Expense");
+            System.out.println("5. Update Expense");
             System.out.println("6. Total Expenses by Category");
             System.out.println("7. Exit Program");
 
@@ -93,6 +91,24 @@ public class Main {
                     controller.deleteExpenseEntry(deletePath, id);
                     break;
 
+                case 5:
+                    System.out.println("Enter File Path for Update Expense File");
+                    String updatePath = reader.readLine();
+                    if (updatePath.isBlank()) {
+                        System.out.println("returning back to menu");
+                        selection = 0;
+                        break;
+                    }
+                    ArrayList<Expense> expeseOptions = controller.getExpenses(updatePath);
+                    for (Expense expense : expeseOptions) {
+                        System.out.println(expense.getexpenseId() + " " + expense.getName() + " " + expense.getCategory() + " " + expense.getAmount());
+                    }
+                    System.out.println("Please provide the expense Id you want to update");
+                    id = Integer.parseInt(reader.readLine());
+                    System.out.println("Please provide new Name, Category, Expense Amount");
+                    String newExpense = reader.readLine();
+                    controller.updateExpense(updatePath, id, newExpense);
+                    break;
 
                 case 6:
                     System.out.println("Enter File Path to calculate total Expenses");
@@ -115,20 +131,6 @@ public class Main {
                     break;
             }
         }
-
-
-//        String output = controller.createExpeseFile("testExpense");
-//        System.out.println(output);
-//
-//        String filePath = extractFile.extractFilePath(output);
-//
-//        controller.addExpense("cookies", "Food", 2.30, filePath);
-//
-//        ArrayList<Expense> expenses = controller.getExpenses(filePath);
-//        for (Expense expense : expenses) {
-//            System.out.println(expense.getName() + " " + expense.getCategory() + " " + expense.getAmount());
-//        }
-
 
     }
 }
